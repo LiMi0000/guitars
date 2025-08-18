@@ -1,6 +1,6 @@
 import { useQuery, useLazyQuery } from "@apollo/client";
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GET_BRAND_MODELS, SEARCH_MODELS } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
 
@@ -51,10 +51,11 @@ export default function ModelsPage() {
         return () => clearTimeout(t);
     }, [search, brandId, runSearch]);
 
-    const models =
-        search.trim().length > 0
-            ? searchData?.searchModels ?? []
-            : baseData?.findBrandModels ?? [];
+    const models: Model[] = useMemo(() => {
+        return search.trim().length > 0
+            ? (searchData?.searchModels ?? [])
+            : (baseData?.findBrandModels ?? []);
+    }, [search, searchData, baseData]);
 
     const filteredModels =
         filterType === "" || filterType === "all"
@@ -64,6 +65,20 @@ export default function ModelsPage() {
 
     const loading = baseLoading || searchLoading;
     const error = baseError || searchError;
+
+
+
+
+    const [page, setPage] = useState(1);
+    const pageSize = 6;
+    useEffect(() => {
+        setPage(1);
+    }, [search, filterType, models]);
+
+    const total = filteredModels?.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const startIdx = (page - 1) * pageSize;
+    const pageItems = filteredModels?.slice(startIdx, startIdx + pageSize);
 
     return (
         <div className="max-w-10/12 mx-auto px-6 py-12">
@@ -110,14 +125,13 @@ export default function ModelsPage() {
             )}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {filteredModels.map((m) => (
+                {pageItems.map((m) => (
                     <div
                         key={m.id}
                         className="p-4 bg-white hover:shadow-md transition"
                     >
                         {m.image && (
                             <div
-                                key={m.id}
                                 onClick={() => navigate(`/guitars/${m.id}`, { state: { brandId } })}
                                 className="p-4 bg-white transition cursor-pointer"
                             >
@@ -135,6 +149,47 @@ export default function ModelsPage() {
                     </div>
                 ))}
             </div>
+
+            <div className="mt-8 flex items-center justify-between">
+                <span className="text-sm text-gray-500">
+                    {total === 0
+                        ? "0 items"
+                        : `${startIdx + 1}–${Math.min(startIdx + pageSize, total)} of ${total}`}
+                </span>
+
+                <div className="flex items-center gap-2">
+                    <button
+                        onClick={() => setPage((p) => Math.max(1, p - 1))}
+                        disabled={page === 1}
+                        className="px-3 py-1 rounded border disabled:opacity-40"
+                        aria-label="Previous page"
+                    >
+                        Prev
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+                        <button
+                            key={n}
+                            onClick={() => setPage(n)}
+                            className={`px-3 py-1 rounded border ${n === page ? "bg-orange-500 text-white border-orange-500" : ""
+                                }`}
+                            aria-label={`Page ${n}`}
+                        >
+                            {n}
+                        </button>
+                    ))}
+
+                    <button
+                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                        disabled={page === totalPages}
+                        className="px-3 py-1 rounded border disabled:opacity-40"
+                        aria-label="Next page"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+
         </div>
     );
 }
