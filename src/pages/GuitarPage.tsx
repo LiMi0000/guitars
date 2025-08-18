@@ -2,6 +2,7 @@ import { useLocation, useParams, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
 import { GET_MODEL } from "../graphql/queries";
+import HeroHeader from "../components/HeroHeader";
 
 
 type LocationState = { brandId?: string };
@@ -52,21 +53,40 @@ export default function GuitarPage() {
     if (!model) return <div className="p-8 text-center">Model not found.</div>;
 
     return (
-        <div className="py-10">
-            <div className="flex justify-around items-start">
-                <div className="max-w-xl">
-                    <Link to={`/brands/${brandId}`} className="text-sm text-gray-500 hover:text-gray-800">← Back to List</Link>
-                    <h1 className="mt-4 text-3xl md:text-6xl font-bold leading-tight">
-                        {model.name}
-                        {/* <span className="block text-lg text-gray-500">{model.type}</span> */}
-                    </h1>
+        <div className="">
+            <Link to={`/brands/${brandId}`} className="absolute text-sm text-gray-500 hover:text-gray-800 p-0.5">← Back to List</Link>
+
+            <HeroHeader
+                brandLogoSrc="/assets/guitars-logo.png"
+                titleTop={model.name}
+                titleHighlight=""
+                titleAfter=""
+                description={
+                    ""
+                }
+                rightImageSrc="/assets/orange.png"
+                rightImageAlt="Guitar with amp"
+                floatIconSrc="/assets/icon1.png"
+            />
+
+            {model && (
+                <div className="">
+                    {model.image && (
+                        <img
+                            src={model.image}
+                            alt={model.name}
+                            className="h-82 w-82 object-contain right-15 absolute top-1 -rotate-45"
+                        />
+                    )}
                 </div>
-                {model.image && (
-                    <img src={model.image} alt={model.name} className="w-[420px] max-w-full object-contain rounded-xl bg-white" />
-                )}
+            )}
+
+            <div className="flex justify-around items-start">
+
+
             </div>
 
-            <div className="mt-10">
+            <div className="my-20">
                 <div className="inline-flex gap-2 justify-between p-1 rounded-lg w-full">
                     <button
                         onClick={() => setTab("specs")}
