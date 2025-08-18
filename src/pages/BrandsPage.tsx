@@ -1,3 +1,6 @@
+import Brands from "../components/Brands";
+import WhyTry from "../components/WhyTry";
+
 export default function BrandsPage() {
     return (
         <div className="min-h-screen bg-white flex flex-col">
@@ -35,72 +38,10 @@ export default function BrandsPage() {
             </div>
 
 
-            <section className="py-40">
-                <div className=" mx-auto text-center px-6">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                        Featuring the <span className="text-orange-500">Best Brands</span>
-                    </h2>
-                    <p className="text-gray-500 mb-10">
-                        Select your preferred brand and explore our exquisite collection.
-                    </p>
+            <Brands />
 
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x- gap-y-20 items-center">
-                        <img src="/assets/brands/brand1.png" alt="Ibanez" className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand2.png" alt="Martin & Co." className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand3.png" alt="Fender" className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand4.png" alt="Gibson" className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand5.png" alt="Taylor" className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand6.png" alt="Gretsch" className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand7.png" alt="Takamine" className="grayscale hover:grayscale-0 transition mx-auto" />
-                        <img src="/assets/brands/brand8.png" alt="Seagull" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    </div>
-                </div>
-            </section>
+            <WhyTry />
 
-
-            <section className="bg-black text-white py-20 md:py-24">
-                <div className="flex flex-col items-center space-y-16 sm:space-y-20">
-                    <div>
-                        <p className="text-3xl sm:text-4xl md:text-5xl text-center">
-                            Why try <span className="text-orange-500">VibeStrings</span>
-                        </p>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row flex- justify-center md:justify-evenly gap-10 md:gap-20 w-full">
-
-                        <div className="flex flex-col items-center text-center space-y-2 basis-full sm:basis-1/2 md:basis-1/3">
-                            <div className="p-4 bg-[#262626] rounded-2xl mb-8">
-                                <img src="/assets/icons/smooth-browsing.png" alt="" className="w-6 h-6 md:w-7 md:h-7" />
-                            </div>
-                            <p className="uppercase">Smooth Browsing</p>
-                            <p className="text-xs sm:text-sm text-center text-gray-800">
-                                Lorem ipsum dolor sit amet, <br /> consectetur adipiscing elit.
-                            </p>
-                        </div>
-
-                        <div className="flex flex-col items-center text-center space-y-2 basis-full sm:basis-1/2 md:basis-1/3">
-                            <div className="p-4 bg-[#262626] rounded-2xl mb-8">
-                                <img src="/assets/icons/easy-delivery.png" alt="" className="w-6 h-6 md:w-7 md:h-7" />
-                            </div>
-                            <p className="uppercase">Easy Delivery</p>
-                            <p className="text-xs sm:text-sm text-center text-gray-800">
-                                Lorem ipsum dolor sit amet, <br /> consectetur adipiscing elit.
-                            </p>
-                        </div>
-
-                        <div className="flex flex-col items-center text-center space-y-2 basis-full sm:basis-1/2 md:basis-1/3">
-                            <div className="p-4 bg-[#262626] rounded-2xl mb-8">
-                                <img src="/assets/icons/swift-payments.png" alt="" className="w-6 h-6 md:w-7 md:h-7" />
-                            </div>
-                            <p className="uppercase">Swift Payments</p>
-                            <p className="text-xs sm:text-sm text-center text-gray-800">
-                                Lorem ipsum dolor sit amet, <br /> consectetur adipiscing elit.
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            </section>
 
 
             <section className="py-40">
