@@ -16,6 +16,7 @@ export default function BrandsPage() {
                 rightImageSrc="/assets/unsplash_banner.png"
                 rightImageAlt="Guitar with amp"
                 floatIconSrc="/assets/icon1.png"
+                forceBreak={true}
             />
 
 

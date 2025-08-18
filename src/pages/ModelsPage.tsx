@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { GET_BRAND_MODELS, SEARCH_MODELS } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
+import HeroHeader from "../components/HeroHeader";
+import { GET_BRANDS } from "../graphql/queries";
 
 type Model = {
     id: string;
@@ -12,16 +14,32 @@ type Model = {
     price?: number | null;
 };
 
+type Brand = {
+    id: string;
+    name: string;
+    image?: string | null;
+    origin?: string | null;
+    categories?: string[] | null;
+};
+
 // type LocationState = { brandName?: string };
 
 export default function ModelsPage() {
+    const { data } = useQuery<{ findAllBrands: Brand[] }>(GET_BRANDS);
+    const brands = data?.findAllBrands ?? [];
+
+
+
     const navigate = useNavigate();
     const { brandId } = useParams<{ brandId: string }>();
+    const brand = brands.find((b) => b.id === brandId);
     // const location = useLocation();
     // const brandName = (location.state as LocationState)?.brandName ?? "";
 
     const [search, setSearch] = useState("");
     const [filterType, setFilterType] = useState("");
+
+
 
     const {
         data: baseData,
@@ -81,11 +99,38 @@ export default function ModelsPage() {
     const pageItems = filteredModels?.slice(startIdx, startIdx + pageSize);
 
     return (
-        <div className="max-w-10/12 mx-auto px-6 py-12">
-            <h1 className="text-3xl font-bold mb-6 text-center">Check out the <span className="text-orange-500">Selection</span></h1>
-            <Link to={`/`} className="text-sm text-gray-500 hover:text-gray-800">← Back to Brands</Link>
+        <div className="relative">
+            <Link to={`/`} className="absolute text-sm text-gray-500 hover:text-gray-800">← Back to Brands</Link>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8 sm:justify-end">
+            <HeroHeader
+                brandLogoSrc="/assets/guitars-logo.png"
+                titleTop="Play like a"
+                titleHighlight="Rock star"
+                titleAfter=""
+                description={
+                    "With a legacy dating back to the 1950s, Ibanez blends expert craftsmanship with cutting-edge innovation to deliver guitars that inspire creativity and elevate your performance. Trusted by top artists worldwide, Ibanez guitars are built to play fast, sound bold, and stand out on any stage. Ask ChatGPT"
+                }
+                rightImageSrc="/assets/orange.png"
+                rightImageAlt="Guitar with amp"
+                floatIconSrc="/assets/icon1.png"
+            />
+
+            {brand && (
+                <div className="">
+                    {brand.image && (
+                        <img
+                            src={brand.image}
+                            alt={brand.name}
+                            className="h-82 w-82 object-contain right-15 absolute top-1 opacity-40"
+                        />
+                    )}
+                </div>
+            )}
+
+
+            <h1 className="text-3xl font-bold mb-6 text-center mt-20">Check out the <span className="text-orange-500">Selection</span></h1>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-8 sm:justify-end px-10">
                 <select
                     value={filterType}
                     onChange={(e) => setFilterType(e.target.value)}
@@ -124,7 +169,7 @@ export default function ModelsPage() {
                 <p className="text-red-600">Error loading models: {error.message}</p>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-10">
                 {pageItems.map((m) => (
                     <div
                         key={m.id}
@@ -150,11 +195,14 @@ export default function ModelsPage() {
                 ))}
             </div>
 
-            <div className="mt-8 flex items-center justify-between">
+            <div className="mt-8 flex items-center justify-between px-10 py-10">
                 <span className="text-sm text-gray-500">
-                    {total === 0
+                    {/* {total === 0
                         ? "0 items"
-                        : `${startIdx + 1}–${Math.min(startIdx + pageSize, total)} of ${total}`}
+                        : `${startIdx + 1}–${Math.min(startIdx + pageSize, total)} of ${total}`} */}
+                    {total === 0
+                        ? "Showing 0 results"
+                        : `Showing ${Math.min(pageSize, total - startIdx)} results from ${total}`}
                 </span>
 
                 <div className="flex items-center gap-2">
@@ -171,7 +219,7 @@ export default function ModelsPage() {
                         <button
                             key={n}
                             onClick={() => setPage(n)}
-                            className={`px-3 py-1 rounded border ${n === page ? "bg-orange-500 text-white border-orange-500" : ""
+                            className={`px-3 py-1 rounded border ${n === page ? "bg-white text-orange-500 font-semibold border-orange-500" : ""
                                 }`}
                             aria-label={`Page ${n}`}
                         >
