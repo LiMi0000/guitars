@@ -1,7 +1,8 @@
 import { useQuery, useLazyQuery } from "@apollo/client";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GET_BRAND_MODELS, SEARCH_MODELS } from "../graphql/queries";
+import { useNavigate } from "react-router-dom";
 
 type Model = {
     id: string;
@@ -11,12 +12,13 @@ type Model = {
     price?: number | null;
 };
 
-type LocationState = { brandName?: string };
+// type LocationState = { brandName?: string };
 
 export default function ModelsPage() {
+    const navigate = useNavigate();
     const { brandId } = useParams<{ brandId: string }>();
-    const location = useLocation();
-    const brandName = (location.state as LocationState)?.brandName ?? "";
+    // const location = useLocation();
+    // const brandName = (location.state as LocationState)?.brandName ?? "";
 
     const [search, setSearch] = useState("");
     const [filterType, setFilterType] = useState("");
@@ -66,6 +68,7 @@ export default function ModelsPage() {
     return (
         <div className="max-w-10/12 mx-auto px-6 py-12">
             <h1 className="text-3xl font-bold mb-6 text-center">Check out the <span className="text-orange-500">Selection</span></h1>
+            <Link to={`/`} className="text-sm text-gray-500 hover:text-gray-800">← Back to Brands</Link>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8 sm:justify-end">
                 <select
@@ -106,7 +109,6 @@ export default function ModelsPage() {
                 <p className="text-red-600">Error loading models: {error.message}</p>
             )}
 
-            {/* Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {filteredModels.map((m) => (
                     <div
@@ -114,11 +116,17 @@ export default function ModelsPage() {
                         className="p-4 bg-white hover:shadow-md transition"
                     >
                         {m.image && (
-                            <img
-                                src={m.image}
-                                alt={m.name}
-                                className="h-40 w-full object-contain mb-3"
-                            />
+                            <div
+                                key={m.id}
+                                onClick={() => navigate(`/guitars/${m.id}`, { state: { brandId } })}
+                                className="p-4 bg-white transition cursor-pointer"
+                            >
+                                <img
+                                    src={m.image}
+                                    alt={m.name}
+                                    className="h-40 w-full object-contain mb-3"
+                                />
+                            </div>
                         )}
                         <h3 className="font-semibold">{m.name}</h3>
                         <p className="font-medium text-gray-400">

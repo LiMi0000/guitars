@@ -1,4 +1,3 @@
-// src/components/BrandCard.tsx
 type BrandCardProps = {
     name: string;
     logo?: string | null;

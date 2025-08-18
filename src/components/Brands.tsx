@@ -61,6 +61,6 @@ export default function Brands() {
                     ))}
                 </div>
             </div>
-        </section>
+        </section >
     );
 }
