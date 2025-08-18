@@ -1,18 +1,33 @@
-const brands = [
-    { src: "/assets/brands/brand1.png", name: "Ibanez" },
-    { src: "/assets/brands/brand2.png", name: "Martin & Co." },
-    { src: "/assets/brands/brand3.png", name: "Fender" },
-    { src: "/assets/brands/brand4.png", name: "Gibson" },
-    { src: "/assets/brands/brand5.png", name: "Taylor" },
-    { src: "/assets/brands/brand6.png", name: "Gretsch" },
-    { src: "/assets/brands/brand7.png", name: "Takamine" },
-    { src: "/assets/brands/brand8.png", name: "Seagull" },
-];
+import { useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
+import { GET_BRANDS } from "../graphql/queries";
+
+type Brand = {
+    id: string;
+    name: string;
+    image?: string | null;
+    origin?: string | null;
+    categories?: string[] | null;
+};
+
 
 export default function Brands() {
+    const { data, loading, error } = useQuery<{ findAllBrands: Brand[] }>(GET_BRANDS);
+    const navigate = useNavigate();
+
+    if (loading) {
+        return <section className="py-40 text-center"><p>Loading brands…</p></section>;
+    }
+
+    if (error) {
+        return <section className="py-40 text-center"><p className="text-red-600">Error: {error.message}</p></section>;
+    }
+
+    const brands = data?.findAllBrands ?? [];
+
     return (
         <section className="py-40">
-            <div className=" mx-auto text-center px-6">
+            <div className="mx-auto text-center px-6">
                 <h2 className="text-2xl md:text-3xl font-bold mb-2">
                     Featuring the <span className="text-orange-500">Best Brands</span>
                 </h2>
@@ -20,26 +35,32 @@ export default function Brands() {
                     Select your preferred brand and explore our exquisite collection.
                 </p>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x- gap-y-20 items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-20 items-center">
                     {brands.map((brand) => (
-                        <img
-                            key={brand.name}
-                            src={brand.src}
-                            alt={brand.name}
+                        <button
+                            key={brand.id}
+                            onClick={() =>
+                                navigate(`/brands/${brand.id}`, {
+                                    state: {
+                                        brandName: brand.name,
+                                        brandImage: brand.image,
+                                        brandOrigin: brand.origin,
+                                        brandCategories: brand.categories,
+                                    },
+                                })
+                            }
                             className="grayscale hover:grayscale-0 transition mx-auto"
-                        />
+                        >
+                            {brand.image ? (
+                                <img src={brand.image} alt={brand.name} className="h-16 object-contain cursor-pointer" />
+                            ) : (
+                                <span className="text-lg font-semibold">{brand.name}</span>
+                            )}
+                        </button>
+
                     ))}
-                    {/* <img src="/assets/brands/brand1.png" alt="Ibanez" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand2.png" alt="Martin & Co." className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand3.png" alt="Fender" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand4.png" alt="Gibson" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand5.png" alt="Taylor" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand6.png" alt="Gretsch" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand7.png" alt="Takamine" className="grayscale hover:grayscale-0 transition mx-auto" />
-                    <img src="/assets/brands/brand8.png" alt="Seagull" className="grayscale hover:grayscale-0 transition mx-auto" /> */}
                 </div>
             </div>
         </section>
-
     );
 }

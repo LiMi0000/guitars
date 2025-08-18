@@ -1,41 +1,22 @@
 import Brands from "../components/Brands";
+import HeroHeader from "../components/HeroHeader";
 import WhyTry from "../components/WhyTry";
 
 export default function BrandsPage() {
     return (
         <div className="min-h-screen bg-white flex flex-col">
-            <div className="">
-                <div className="flex justify-between items-start ">
-                    <div className="py-6 px-30 space-y-28">
-                        <img src="/assets/guitars-logo.png" alt="Logo" className="h-10" />
-                        <h1 className="text-4xl md:text-5xl font-bold text-center leading-tight mt-6 mb-4">
-                            Browse top quality <br />
-                            <span className="text-orange-500">Guitars</span> online
-                        </h1>
-                        <p className="text-gray-600 text-center">
-                            Explore 50k+ latest collections of branded guitars <br /> online with
-                            VibeStrings.
-                        </p>
-                    </div>
-
-                    <div className="relative flex-shrink-0">
-                        <img
-                            src="/assets/unsplash_banner.png"
-                            alt="Guitar with amp"
-                            className="w-[500px] object-cover"
-                        />
-
-                        <div className="absolute -bottom-9 right-1/4 -translate-x-1/2">
-                            <img
-                                src="/assets/icon1.png"
-                                alt="Icon1"
-                                className="w-16 h-16 rounded-full bg-white p-2"
-                            />
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <HeroHeader
+                brandLogoSrc="/assets/guitars-logo.png"
+                titleTop="Browse top quality"
+                titleHighlight="Guitars"
+                titleAfter="online"
+                description={
+                    "Explore 50k+ latest collections of branded guitars \n online with VibeStrings."
+                }
+                rightImageSrc="/assets/unsplash_banner.png"
+                rightImageAlt="Guitar with amp"
+                floatIconSrc="/assets/icon1.png"
+            />
 
 
             <Brands />
