@@ -1,6 +1,6 @@
 import { useLocation, useParams, Link } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { GET_MODEL } from "../graphql/queries";
 
 
@@ -34,6 +34,11 @@ export default function GuitarPage() {
         [musicians, page]
     );
 
+    useEffect(() => {
+        setPage(0);
+    }, [model?.id]);
+
+
     if (!brandId) {
         return (
             <div className="max-w-5xl mx-auto px-6 py-10">
@@ -47,15 +52,14 @@ export default function GuitarPage() {
     if (!model) return <div className="p-8 text-center">Model not found.</div>;
 
     return (
-        <div className="max-w-6xl mx-auto px-6 py-10">
-            <div className="flex justify-between items-start">
+        <div className="py-10">
+            <div className="flex justify-around items-start">
                 <div className="max-w-xl">
                     <Link to={`/brands/${brandId}`} className="text-sm text-gray-500 hover:text-gray-800">← Back to List</Link>
-                    <h1 className="mt-4 text-3xl md:text-4xl font-bold leading-tight">
+                    <h1 className="mt-4 text-3xl md:text-6xl font-bold leading-tight">
                         {model.name}
-                        <span className="block text-lg text-gray-500">{model.type}</span>
+                        {/* <span className="block text-lg text-gray-500">{model.type}</span> */}
                     </h1>
-                    {model.description && <p className="mt-4 text-gray-600">{model.description}</p>}
                 </div>
                 {model.image && (
                     <img src={model.image} alt={model.name} className="w-[420px] max-w-full object-contain rounded-xl bg-white" />
@@ -63,67 +67,88 @@ export default function GuitarPage() {
             </div>
 
             <div className="mt-10">
-                <div className="inline-flex gap-2 bg-gray-100 p-1 rounded-lg">
-                    <button onClick={() => setTab("specs")} className={`px-4 py-2 rounded-md ${tab === "specs" ? "bg-white shadow" : "text-gray-600"}`}>Specification</button>
-                    <button onClick={() => setTab("musicians")} className={`px-4 py-2 rounded-md ${tab === "musicians" ? "bg-white shadow" : "text-gray-600"}`}>Who plays it?</button>
+                <div className="inline-flex gap-2 justify-between p-1 rounded-lg w-full">
+                    <button
+                        onClick={() => setTab("specs")}
+                        className={`px-4 py-2  w-full border-b-2 ${tab === "specs"
+                            ? "border-orange-500 text-orange-500 font-semibold"
+                            : "border-gray-300 text-gray-400"
+                            }`}
+                    >
+                        Specification
+                    </button>
+
+                    <button
+                        onClick={() => setTab("musicians")}
+                        className={`px-4 py-2 w-full border-b-2 ${tab === "musicians"
+                            ? "border-orange-500 text-orange-500 font-semibold"
+                            : "border-gray-300 text-gray-400"
+                            }`}
+                    >
+                        Who plays it?
+                    </button>
+
                 </div>
 
                 {tab === "specs" ? (
-                    <ul className="mt-6 space-y-2 text-sm max-w-xl">
-                        <Spec label="Body Wood" value={model.specs?.bodyWood} />
-                        <Spec label="Neck Wood" value={model.specs?.neckWood} />
-                        <Spec label="Fingerboard" value={model.specs?.fingerboardWood} />
-                        <Spec label="Pickups" value={model.specs?.pickups} />
-                        <Spec label="Tuners" value={model.specs?.tuners} />
-                        <Spec label="Scale Length" value={model.specs?.scaleLength} />
-                        <Spec label="Bridge" value={model.specs?.bridge} />
-                    </ul>
+                    <div className="mt-6 px-10  flex flex-col items-center">
+                        {model.description && (
+                            <p className="text-gray-700 leading-relaxed mb-6 text-center max-w-7xl ">{model.description}</p>
+                        )}
+
+                        <ul className="list-disc list-inside space-y-2 text-gray-700 w-8/12">
+                            {model.specs?.bodyWood && <li>Body Wood: {model.specs.bodyWood}</li>}
+                            {model.specs?.neckWood && <li>Neck Wood: {model.specs.neckWood}</li>}
+                            {model.specs?.fingerboardWood && <li>Fingerboard: {model.specs.fingerboardWood}</li>}
+                            {model.specs?.pickups && <li>Pickups: {model.specs.pickups}</li>}
+                            {model.specs?.tuners && <li>Tuners: {model.specs.tuners}</li>}
+                            {model.specs?.scaleLength && <li>Scale Length: {model.specs.scaleLength}</li>}
+                            {model.specs?.bridge && <li>Bridge: {model.specs.bridge}</li>}
+                        </ul>
+                    </div>
                 ) : (
                     <div className="mt-6">
-                        <div className="grid sm:grid-cols-2 gap-6">
+                        <div className="flex flex-wrap justify-center gap-6">
                             {pageSlice.map((p: Musician, i: number) => (
-                                <div key={`${p.name}-${i}`} className="rounded-xl border p-4 bg-white">
-                                    <div className="flex items-center gap-4">
-                                        {p.musicianImage ? (
-                                            <img className="w-16 h-16 rounded-lg object-cover" src={p.musicianImage} alt={p.name} />
-                                        ) : (
-                                            <div className="w-16 h-16 rounded-lg bg-gray-200" />
-                                        )}
-                                        <div>
-                                            <p className="font-semibold">{p.name}</p>
-                                            {!!p.bands?.length && (
-                                                <p className="text-xs text-gray-500">{p.bands.join(", ")}</p>
-                                            )}
-                                        </div>
-                                    </div>
+                                <div
+                                    key={`${p.name}-${i}`}
+                                    className="p-4 flex flex-col items-center bg-[#FFEFE8] rounded-lg shadow-sm w-96"
+                                >
+                                    {p.musicianImage ? (
+                                        <img
+                                            src={p.musicianImage}
+                                            alt={p.name}
+                                            className="w-full aspect-[3/4] object-cover rounded-md"
+                                        />
+                                    ) : (
+                                        <div className="w-full aspect-[3/4] bg-gray-200 rounded-md" />
+                                    )}
+                                    <p className="mt-3 font-semibold">{p.name}</p>
+                                    {/* {!!p.bands?.length && (
+                                        <p className="text-xs text-gray-500">{p.bands.join(", ")}</p>
+                                    )} */}
                                 </div>
                             ))}
                         </div>
 
                         {musicians.length > pageSize && (
-                            <div className="mt-4 flex items-center gap-2">
+                            <div className="mt-4 flex justify-center gap-2">
                                 {Array.from({ length: totalPages }).map((_, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => setPage(idx)}
-                                        className={`h-2 w-2 rounded-full ${idx === page ? "bg-orange-500" : "bg-gray-300"}`}
+                                        className={`h-2 w-2 rounded-full ${idx === page ? "bg-orange-500" : "bg-gray-300"
+                                            }`}
                                         aria-label={`Page ${idx + 1}`}
                                     />
                                 ))}
                             </div>
                         )}
                     </div>
+
                 )}
             </div>
         </div>
     );
 }
 
-function Spec({ label, value }: { label: string; value?: string | null }) {
-    return (
-        <li className="flex justify-between border-b py-2">
-            <span className="text-gray-500">{label}</span>
-            <span className="font-medium">{value || "—"}</span>
-        </li>
-    );
-}
