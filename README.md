@@ -82,7 +82,6 @@ src/
  ├── context/           # Language context and provider
  ├── graphql/           # Queries and mutations
  ├── pages/             # Main pages (Brands, Models, Guitar details)
- ├── translations/      # Translation strings
  └── main.tsx           # App entry point
 ```
 
@@ -101,3 +100,32 @@ Format with Prettier:
 ```bash
 npm run format
 ```
+
+## Feature Checklist - Completed
+
+### Page 1 – Guitar Brands
+
+- [x] Display all guitar brands fetched from the API ✅
+- [x] Navigate to Page 2 when a brand is selected ✅
+
+### Page 2 – Guitar Models
+
+- [x] Display models for the selected brand ✅
+- [x] Search bar to filter models by name ✅
+- [x] Filter to narrow by guitar type ✅
+- [x] Pagination to browse results ✅
+- [x] Clicking a model navigates to Page 3 ✅
+
+### Page 3 – Guitar Details (Bonus)
+
+- [x] Display details of a selected guitar in two tabs ✅
+  - [x] **Specs** tab – show full specifications ✅
+  - [x] **Musicians** tab – list musicians using the guitar ✅
+- [x] Show only 2 musicians at a time ✅
+- [x] Include dots/buttons to reveal 2 more at a time if more exist (pagination/dots) ✅
+
+### Requirements
+
+- [x] Use Apollo Client for data fetching ✅
+- [x] Handle loading and error states gracefully ✅
+- [x] Use CSS / UI utility classes (Tailwind) for readable styling ✅
