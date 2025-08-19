@@ -3,15 +3,7 @@ import { useQuery } from "@apollo/client";
 import { useEffect, useMemo, useState } from "react";
 import { GET_MODEL } from "../graphql/queries";
 import HeroHeader from "../components/HeroHeader";
-
-
-type LocationState = { brandId?: string };
-
-type Musician = {
-    name: string;
-    musicianImage?: string | null;
-    bands: string[];
-}
+import type { LocationState, Musician } from "../types/pages";
 
 export default function GuitarPage() {
     const { guitarId } = useParams<{ guitarId: string }>();

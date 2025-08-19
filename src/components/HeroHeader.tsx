@@ -1,27 +1,4 @@
-type HeroHeaderProps = {
-    brandLogoSrc?: string;
-    backTo?: string;
-    backLabel?: string;
-    titleTop: string;
-    titleHighlight: string;
-    titleAfter?: string;
-    description?: string;
-    centerText?: boolean;
-
-    rightImageSrc: string;
-    rightImageAlt?: string;
-    rightImageClassName?: string;
-
-    floatIconSrc?: string;
-    floatIconAlt?: string;
-    floatIconClassName?: string;
-    floatIconPositionClassName?: string;
-
-
-    keepHighlightTogether?: boolean;
-
-    forceBreak?: boolean;
-};
+import type { HeroHeaderProps } from '../types/components';
 
 export default function HeroHeader({
     brandLogoSrc,

@@ -1,14 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { GET_BRANDS } from "../graphql/queries";
-
-type Brand = {
-    id: string;
-    name: string;
-    image?: string | null;
-    origin?: string | null;
-    categories?: string[] | null;
-};
+import type { Brand } from "../types/components";
 
 
 export default function Brands() {

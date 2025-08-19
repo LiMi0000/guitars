@@ -6,24 +6,8 @@ import { useNavigate } from "react-router-dom";
 import HeroHeader from "../components/HeroHeader";
 import { GET_BRANDS } from "../graphql/queries";
 import Pagination from "../components/Pagination";
+import type { Brand, Model } from "../types/pages";
 
-type Model = {
-    id: string;
-    name: string;
-    type: string;
-    image?: string | null;
-    price?: number | null;
-};
-
-type Brand = {
-    id: string;
-    name: string;
-    image?: string | null;
-    origin?: string | null;
-    categories?: string[] | null;
-};
-
-// type LocationState = { brandName?: string };
 
 export default function ModelsPage() {
     const { data } = useQuery<{ findAllBrands: Brand[] }>(GET_BRANDS);

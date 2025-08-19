@@ -1,13 +1,5 @@
 import React from "react";
-
-type PaginationProps = {
-    page: number;
-    total: number;
-    pageSize: number;
-    onChange: (nextPage: number) => void;
-    siblingCount?: number;
-    className?: string;
-};
+import type { PaginationProps } from "../types/components";
 
 function range(start: number, end: number) {
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);

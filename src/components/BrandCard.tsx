@@ -1,8 +1,4 @@
-type BrandCardProps = {
-    name: string;
-    logo?: string | null;
-    onClick: () => void;
-};
+import type { BrandCardProps } from '../types/components';
 
 export default function BrandCard({ name, logo, onClick }: BrandCardProps) {
     return (
