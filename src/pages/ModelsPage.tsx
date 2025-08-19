@@ -5,6 +5,7 @@ import { GET_BRAND_MODELS, SEARCH_MODELS } from "../graphql/queries";
 import { useNavigate } from "react-router-dom";
 import HeroHeader from "../components/HeroHeader";
 import { GET_BRANDS } from "../graphql/queries";
+import Pagination from "../components/Pagination";
 
 type Model = {
     id: string;
@@ -27,8 +28,6 @@ type Brand = {
 export default function ModelsPage() {
     const { data } = useQuery<{ findAllBrands: Brand[] }>(GET_BRANDS);
     const brands = data?.findAllBrands ?? [];
-
-
 
     const navigate = useNavigate();
     const { brandId } = useParams<{ brandId: string }>();
@@ -93,8 +92,8 @@ export default function ModelsPage() {
         setPage(1);
     }, [search, filterType, models]);
 
-    const total = filteredModels?.length;
-    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    // const total = filteredModels?.length;
+    // const totalPages = Math.max(1, Math.ceil(total / pageSize));
     const startIdx = (page - 1) * pageSize;
     const pageItems = filteredModels?.slice(startIdx, startIdx + pageSize);
 
@@ -195,49 +194,14 @@ export default function ModelsPage() {
                 ))}
             </div>
 
-            <div className="mt-8 flex items-center justify-between px-10 py-10">
-                <span className="text-sm text-gray-500">
-                    {/* {total === 0
-                        ? "0 items"
-                        : `${startIdx + 1}–${Math.min(startIdx + pageSize, total)} of ${total}`} */}
-                    {total === 0
-                        ? "Showing 0 results"
-                        : `Showing ${Math.min(pageSize, total - startIdx)} results from ${total}`}
-                </span>
-
-                <div className="flex items-center gap-2">
-                    <button
-                        onClick={() => setPage((p) => Math.max(1, p - 1))}
-                        disabled={page === 1}
-                        className="px-3 py-1 rounded border disabled:opacity-40"
-                        aria-label="Previous page"
-                    >
-                        Prev
-                    </button>
-
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                        <button
-                            key={n}
-                            onClick={() => setPage(n)}
-                            className={`px-3 py-1 rounded border ${n === page ? "bg-white text-orange-500 font-semibold border-orange-500" : ""
-                                }`}
-                            aria-label={`Page ${n}`}
-                        >
-                            {n}
-                        </button>
-                    ))}
-
-                    <button
-                        onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                        disabled={page === totalPages}
-                        className="px-3 py-1 rounded border disabled:opacity-40"
-                        aria-label="Next page"
-                    >
-                        Next
-                    </button>
-                </div>
-            </div>
+            <Pagination
+                page={page}
+                total={filteredModels.length}
+                pageSize={pageSize}
+                onChange={setPage}
+            />
 
         </div>
     );
 }
+
