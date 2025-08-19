@@ -25,7 +25,7 @@ export default function Brands() {
                     Select your preferred brand and explore our exquisite collection.
                 </p>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-20 items-center">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-y-20 items-center opacity-50">
                     {loading
                         ? Array.from({ length: 8 }).map((_, i) => <BrandCardSkeleton key={i} />)
                         : brands.map((brand) => (

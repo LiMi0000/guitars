@@ -54,12 +54,22 @@ npm run build
 npm run preview
 ```
 
+## Environment Variables
+
+This project requires a `.env` file for the GraphQL API endpoint.
+
+- If you encounter issues with Apollo Client not connecting, make sure a `.env` file exists in the project root.
+- The correct URL for the API is provided in the assignment documents.
+- Add it as the value for the environment variable (see `apollo.ts` for usage).
+
+⚠️ Note: `.env` is excluded from version control for security reasons and will not be pushed to GitHub.
+
 ---
 
 ## Note on Vite Version
 
-This project uses **Vite v6.2.0**.  
-The latest versions of Vite may cause issues with this setup.  
+This project uses **Vite v6.2.0**.
+The latest versions of Vite may cause issues with this setup.
 If you encounter errors related to Vite or hot-reloading, check your installed version:
 
 ```bash
