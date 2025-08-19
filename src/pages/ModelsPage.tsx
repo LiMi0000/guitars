@@ -17,8 +17,7 @@ export default function ModelsPage() {
     const navigate = useNavigate();
     const { brandId } = useParams<{ brandId: string }>();
     const brand = brands.find((b) => b.id === brandId);
-    // const location = useLocation();
-    // const brandName = (location.state as LocationState)?.brandName ?? "";
+
 
     const [search, setSearch] = useState("");
     const [filterType, setFilterType] = useState("");
@@ -65,7 +64,6 @@ export default function ModelsPage() {
             : models.filter((m) => m.type?.toLowerCase() === filterType.toLowerCase());
 
 
-    // const loading = baseLoading || searchLoading;
     const error = baseError || searchError;
 
 
@@ -75,8 +73,7 @@ export default function ModelsPage() {
         setPage(1);
     }, [search, filterType, models]);
 
-    // const total = filteredModels?.length;
-    // const totalPages = Math.max(1, Math.ceil(total / pageSize));
+
     const startIdx = (page - 1) * pageSize;
     const pageItems = filteredModels?.slice(startIdx, startIdx + pageSize);
 

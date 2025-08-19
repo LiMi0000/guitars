@@ -136,9 +136,7 @@ export default function GuitarPage() {
                                         <div className="w-full aspect-[3/4] bg-gray-200 rounded-md" />
                                     )}
                                     <p className="mt-3 font-semibold">{p.name}</p>
-                                    {/* {!!p.bands?.length && (
-                                        <p className="text-xs text-gray-500">{p.bands.join(", ")}</p>
-                                    )} */}
+
                                 </div>
                             ))}
                         </div>
