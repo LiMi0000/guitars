@@ -1,3 +1,5 @@
+export type SkeletonProps = { className?: string }
+
 export type BrandCardProps = {
     name: string;
     logo?: string | null;
