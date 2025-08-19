@@ -1,15 +1,10 @@
 import React from "react";
 
 type PaginationProps = {
-    /** 1-based current page */
     page: number;
-    /** total number of items */
     total: number;
-    /** items per page */
     pageSize: number;
-    /** called with a new 1-based page */
     onChange: (nextPage: number) => void;
-    /** how many neighbors to show around the current page (for ellipses) */
     siblingCount?: number;
     className?: string;
 };
@@ -30,7 +25,6 @@ export default function Pagination({
     const startIdx = (page - 1) * pageSize;
     const showingCount = total === 0 ? 0 : Math.min(pageSize, total - startIdx);
 
-    // Build compact page list with ellipses
     const pagination = React.useMemo(() => {
         if (totalPages <= 7 + siblingCount * 2) {
             return range(1, totalPages);
@@ -89,8 +83,8 @@ export default function Pagination({
                             key={item}
                             onClick={() => go(item)}
                             className={`px-3 py-1 rounded border ${item === page
-                                    ? "bg-white text-orange-500 font-semibold border-orange-500"
-                                    : ""
+                                ? "bg-white text-orange-500 font-semibold border-orange-500"
+                                : ""
                                 }`}
                             aria-label={`Page ${item}`}
                         >
