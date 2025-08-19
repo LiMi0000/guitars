@@ -7,6 +7,7 @@ import HeroHeader from "../components/HeroHeader";
 import { GET_BRANDS } from "../graphql/queries";
 import Pagination from "../components/Pagination";
 import type { Brand, Model } from "../types/pages";
+import { ModelCardSkeleton } from "../components/Skeleton";
 
 
 export default function ModelsPage() {
@@ -64,10 +65,8 @@ export default function ModelsPage() {
             : models.filter((m) => m.type?.toLowerCase() === filterType.toLowerCase());
 
 
-    const loading = baseLoading || searchLoading;
+    // const loading = baseLoading || searchLoading;
     const error = baseError || searchError;
-
-
 
 
     const [page, setPage] = useState(1);
@@ -80,6 +79,8 @@ export default function ModelsPage() {
     // const totalPages = Math.max(1, Math.ceil(total / pageSize));
     const startIdx = (page - 1) * pageSize;
     const pageItems = filteredModels?.slice(startIdx, startIdx + pageSize);
+
+    const isLoading = baseLoading || (search.trim().length > 0 && searchLoading);
 
     return (
         <div className="relative">
@@ -147,36 +148,40 @@ export default function ModelsPage() {
             </div>
 
 
-            {loading && <p>Loading models…</p>}
             {error && (
                 <p className="text-red-600">Error loading models: {error.message}</p>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-10">
-                {pageItems.map((m) => (
-                    <div
-                        key={m.id}
-                        className="p-4 bg-white hover:shadow-md transition"
-                    >
-                        {m.image && (
-                            <div
-                                onClick={() => navigate(`/guitars/${m.id}`, { state: { brandId } })}
-                                className="p-4 bg-white transition cursor-pointer"
-                            >
-                                <img
-                                    src={m.image}
-                                    alt={m.name}
-                                    className="h-40 w-full object-contain mb-3"
-                                />
-                            </div>
-                        )}
-                        <h3 className="font-semibold">{m.name}</h3>
-                        <p className="font-medium text-gray-400">
-                            {m.price ? `$${m.price}` : "Price N/A"}
-                        </p>
-                    </div>
-                ))}
-            </div>
+            {isLoading ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <ModelCardSkeleton key={i} />
+                    ))}
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {pageItems.map((m) => (
+                        <div key={m.id} className="p-4 bg-white hover:shadow-md transition">
+                            {m.image && (
+                                <div
+                                    onClick={() => navigate(`/guitars/${m.id}`, { state: { brandId } })}
+                                    className="cursor-pointer"
+                                >
+                                    <img
+                                        src={m.image}
+                                        alt={m.name}
+                                        className="h-40 w-full object-contain mb-3"
+                                    />
+                                </div>
+                            )}
+                            <h3 className="font-semibold">{m.name}</h3>
+                            <p className="font-medium text-gray-400">
+                                {m.price ? `$${m.price}` : "Price N/A"}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             <Pagination
                 page={page}
